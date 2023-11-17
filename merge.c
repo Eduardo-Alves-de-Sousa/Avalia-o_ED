@@ -158,8 +158,15 @@ int main() {
     // Verificar se o tamanho e o tipo de entrada são válidos
     if ((tamanho == 100 || tamanho == 1000 || tamanho == 10000 || tamanho == 100000) &&
         (tipo_array == 'a' || tipo_array == 'o' || tipo_array == 'i')) {
-        // Testar o merge sort para o tipo de array selecionado
-        testar_merge_sort(tamanho, tipo_array, opcao_impressao);
+
+        for (int i = 0; i < 10; i++) {
+            printf("\nTeste %d:\n", i + 1);
+            
+            // Testar o merge sort para o tipo de array selecionado
+            testar_merge_sort(tamanho, tipo_array, opcao_impressao);
+       
+            sleep(1);
+        }
     } else {
         printf("Tamanho ou tipo do array inválido.\n");
     }
