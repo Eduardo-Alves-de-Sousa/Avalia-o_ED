@@ -67,20 +67,6 @@ void gerar_array_aleatorio(int arr[], int tamanho) {
     }
 }
 
-// Função para gerar um array ordenado
-void gerar_array_ordenado(int arr[], int tamanho) {
-    for (int i = 0; i < tamanho; i++) {
-        arr[i] = i + 1;
-    }
-}
-
-// Função para gerar um array ordenado inversamente
-void gerar_array_inverso(int arr[], int tamanho) {
-    for (int i = 0; i < tamanho; i++) {
-        arr[i] = tamanho - i;
-    }
-}
-
 // Função para imprimir os elementos de um array
 void imprimir_array(int arr[], int tamanho) {
     for (int i = 0; i < tamanho; i++) {
@@ -89,51 +75,17 @@ void imprimir_array(int arr[], int tamanho) {
     printf("\n");
 }
 
-// Função para testar o merge sort com diferentes tipos e tamanhos de arrays
-void testar_merge_sort(int tamanho, char tipo_array, int opcao_impressao) {
+// Função para testar o merge sort com vetores aleatórios
+void testar_merge_sort(int tamanho, struct MetricasDesempenho* metricas) {
     int arr[tamanho];
-    struct MetricasDesempenho metricas = {0.0, 0, 0};
 
-    switch (tipo_array) {
-        case 'a':
-            gerar_array_aleatorio(arr, tamanho);
-            break;
-        case 'o':
-            gerar_array_ordenado(arr, tamanho);
-            break;
-        case 'i':
-            gerar_array_inverso(arr, tamanho);
-            break;
-        default:
-            printf("Tipo de array inválido.\n");
-            return;
-    }
-
-    // Imprimir o array original se a opção de impressão estiver selecionada
-    if (opcao_impressao) {
-        printf("Array original:\n");
-        imprimir_array(arr, tamanho);
-    }
+    gerar_array_aleatorio(arr, tamanho);
 
     clock_t tempo_inicio = clock();
-    merge_sort(arr, tamanho, &metricas);
+    merge_sort(arr, tamanho, metricas);
     clock_t tempo_fim = clock();
 
-    // Imprimir o array ordenado se a opção de impressão estiver selecionada
-    if (opcao_impressao) {
-        printf("Array ordenado:\n");
-        imprimir_array(arr, tamanho);
-    }
-
-    metricas.tempo_execucao = ((double)(tempo_fim - tempo_inicio)) / CLOCKS_PER_SEC;
-
-    printf("\nResultados para array de tamanho %d (Tipo: %c):\n", tamanho, tipo_array);
-    printf("Método utilizado: MergeSort\n");
-    printf("Tamanho do vetor: %d\n", tamanho);
-    printf("Tipo do vetor: %c\n", tipo_array);
-    printf("Tempo de execução: %f segundos\n", metricas.tempo_execucao);
-    printf("Número de comparações: %d\n", metricas.comparacoes);
-    printf("Número de movimentações: %d\n\n", metricas.movimentos);
+    metricas->tempo_execucao = ((double)(tempo_fim - tempo_inicio)) / CLOCKS_PER_SEC;
 }
 
 // Função principal
@@ -159,14 +111,39 @@ int main() {
     if ((tamanho == 100 || tamanho == 1000 || tamanho == 10000 || tamanho == 100000) &&
         (tipo_array == 'a' || tipo_array == 'o' || tipo_array == 'i')) {
 
+        double soma_tempo_execucao = 0.0;
+        int soma_comparacoes = 0;
+        
         for (int i = 0; i < 10; i++) {
             printf("\nTeste %d:\n", i + 1);
-            
+
             // Testar o merge sort para o tipo de array selecionado
-            testar_merge_sort(tamanho, tipo_array, opcao_impressao);
-       
+            struct MetricasDesempenho metricas = {0.0, 0, 0};
+            testar_merge_sort(tamanho, &metricas);
+
+            // Imprimir os resultados
+            printf("\nResultados para array de tamanho %d (Tipo: %c):\n", tamanho, tipo_array);
+            printf("Método utilizado: MergeSort\n");
+            printf("Tamanho do vetor: %d\n", tamanho);
+            printf("Tipo do vetor: %c\n", tipo_array);
+            printf("Tempo de execução: %f segundos\n", metricas.tempo_execucao);
+            printf("Número de comparações: %d\n", metricas.comparacoes);
+            printf("Número de movimentações: %d\n\n", metricas.movimentos);
+
+            // Acumular métricas para calcular a média
+            soma_tempo_execucao += metricas.tempo_execucao;
+            soma_comparacoes += metricas.comparacoes;
+
             sleep(1);
         }
+
+        // Calcular e imprimir a média
+        double media_tempo_execucao = soma_tempo_execucao / 10.0;
+        int media_comparacoes = soma_comparacoes / 10;
+
+        printf("\nMédia dos Resultados para array de tamanho %d (Tipo: %c):\n", tamanho, tipo_array);
+        printf("Tempo de execução médio: %f segundos\n", media_tempo_execucao);
+        printf("Número médio de comparações: %d\n", media_comparacoes);
     } else {
         printf("Tamanho ou tipo do array inválido.\n");
     }
