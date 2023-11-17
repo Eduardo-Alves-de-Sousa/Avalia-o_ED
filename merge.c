@@ -147,7 +147,7 @@ int main() {
     printf("Selecione o tamanho do array (100, 1000, 10000, 100000): ");
     scanf("%d", &tamanho);
 
-    // Entrada do usuário para o tipo do array
+    // // Entrada do usuário para o tipo do array
     printf("Selecione o tipo do array (a para aleatório, o para ordenado, i para inversamente ordenado): ");
     scanf(" %c", &tipo_array);
 
