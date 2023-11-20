@@ -100,7 +100,7 @@ int main() {
     scanf("%d", &tamanho);
 
     // // Entrada do usuário para o tipo do array
-    printf("Selecione o tipo do array (a para aleatório, o para ordenado, i para inversamente ordenado): ");
+    printf("Selecione o tipo do array ('a' para aleatório, 'o' para ordenado, 'i' para inversamente ordenado): ");
     scanf(" %c", &tipo_array);
 
     // Entrada do usuário para a opção de impressão
